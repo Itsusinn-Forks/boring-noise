@@ -3,8 +3,8 @@
 
 use super::PacketData;
 use crate::noise::errors::WireGuardError;
+use aws_lc_rs::aead::{Aad, LessSafeKey, Nonce, UnboundKey, CHACHA20_POLY1305};
 use parking_lot::Mutex;
-use ring::aead::{Aad, LessSafeKey, Nonce, UnboundKey, CHACHA20_POLY1305};
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 pub struct Session {

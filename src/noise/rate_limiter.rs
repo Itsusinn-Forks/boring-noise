@@ -12,10 +12,10 @@ use crate::sleepyinstant::Instant;
 
 use aead::generic_array::GenericArray;
 use aead::{AeadInPlace, KeyInit};
+use aws_lc_rs::constant_time::verify_slices_are_equal;
 use chacha20poly1305::{Key, XChaCha20Poly1305};
 use parking_lot::Mutex;
 use rand_core::{OsRng, RngCore};
-use ring::constant_time::verify_slices_are_equal;
 
 const COOKIE_REFRESH: u64 = 128; // Use 128 and not 120 so the compiler can optimize out the division
 const COOKIE_SIZE: usize = 16;
