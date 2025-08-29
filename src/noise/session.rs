@@ -1,9 +1,9 @@
 // Copyright (c) 2019 Cloudflare, Inc. All rights reserved.
 // SPDX-License-Identifier: BSD-3-Clause
 
+use super::tls::aead::{Aad, LessSafeKey, Nonce, UnboundKey, CHACHA20_POLY1305};
 use super::PacketData;
 use crate::noise::errors::WireGuardError;
-use aws_lc_rs::aead::{Aad, LessSafeKey, Nonce, UnboundKey, CHACHA20_POLY1305};
 use parking_lot::Mutex;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
@@ -129,7 +129,7 @@ impl ReceivingKeyCounterValidator {
             }
         } else {
             let mut i = self.next;
-            while i % WORD_SIZE != 0 && i < counter {
+            while !i.is_multiple_of(WORD_SIZE) && i < counter {
                 // Clear until i aligned to word size
                 self.clear_bit(i);
                 i += 1;

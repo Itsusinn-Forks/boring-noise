@@ -10,14 +10,19 @@ repository = "https://github.com/watfaq/boring-noise"
 edition = "2021"
 
 [features]
-default = []
+default = ["aws-lc-rs"]
 # mocks std::time::Instant with mock_instant
 mock-instant = ["mock_instant"]
+ring = ["dep:ring", "dep:constant_time_eq"]
+aws-lc-rs = ["dep:aws-lc-rs"]
 
 [dependencies]
 parking_lot = "0.12"
 tracing = "0.1.40"
-aws-lc-rs = { version = "1.13" }
+aws-lc-rs = { version = "1", optional = true }
+ring = { version = "0.17", optional = true }
+constant_time_eq = { version = "0.4", optional = true }
+
 x25519-dalek = { version = "2.0.0", features = [
     "reusable_secrets",
     "static_secrets",

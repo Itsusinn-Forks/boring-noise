@@ -1,6 +1,7 @@
 // Copyright (c) 2019 Cloudflare, Inc. All rights reserved.
 // SPDX-License-Identifier: BSD-3-Clause
 
+use super::tls::aead::{Aad, LessSafeKey, Nonce, UnboundKey, CHACHA20_POLY1305};
 use super::{HandshakeInit, HandshakeResponse, PacketCookieReply};
 use crate::noise::errors::WireGuardError;
 use crate::noise::session::Session;
@@ -8,7 +9,6 @@ use crate::noise::session::Session;
 use crate::sleepyinstant::Instant;
 use crate::x25519;
 use aead::{Aead, Payload};
-use aws_lc_rs::aead::{Aad, LessSafeKey, Nonce, UnboundKey, CHACHA20_POLY1305};
 use blake2::digest::{FixedOutput, KeyInit};
 use blake2::{Blake2s256, Blake2sMac, Digest};
 use chacha20poly1305::XChaCha20Poly1305;
@@ -142,7 +142,7 @@ fn aead_chacha20_open_inner(
     nonce: [u8; 12],
     data: &[u8],
     aad: &[u8],
-) -> Result<(), aws_lc_rs::error::Unspecified> {
+) -> Result<(), super::tls::error::Unspecified> {
     let key = LessSafeKey::new(UnboundKey::new(&CHACHA20_POLY1305, key).unwrap());
 
     let mut inner_buffer = data.to_owned();
@@ -521,7 +521,7 @@ impl Handshake {
             &hash,
         )?;
 
-        aws_lc_rs::constant_time::verify_slices_are_equal(
+        super::tls::verify_slices_are_equal(
             self.params.peer_static_public.as_bytes(),
             &peer_static_public_decrypted,
         )
