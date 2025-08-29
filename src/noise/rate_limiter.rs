@@ -11,9 +11,9 @@ use std::sync::atomic::Ordering;
 #[cfg(not(feature = "mock-instant"))]
 use crate::sleepyinstant::Instant;
 
+use super::tls::verify_slices_are_equal;
 use aead::generic_array::GenericArray;
 use aead::{AeadInPlace, KeyInit};
-use aws_lc_rs::constant_time::verify_slices_are_equal;
 use chacha20poly1305::{Key, XChaCha20Poly1305};
 use parking_lot::Mutex;
 use rand_core::{OsRng, RngCore};

@@ -4,6 +4,7 @@
 pub mod errors;
 pub mod handshake;
 pub mod rate_limiter;
+pub(crate) mod tls;
 
 mod session;
 mod timers;
